@@ -16,7 +16,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { JwtInterceptor } from '@core/interceptor/jwt.interceptor';
 
-export const appConfig: ApplicationConfig = {
+export const appConfig: ApplicationConfig = { // Se define la configuracion de la aplicacion
   providers: [
     provideHttpClient(),
     provideRouter(APP_ROUTE),
@@ -24,8 +24,8 @@ export const appConfig: ApplicationConfig = {
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     { provide: DateAdapter, useClass: MomentDateAdapter },
     {
-      provide: MAT_DATE_FORMATS,
-      useValue: {
+      provide: MAT_DATE_FORMATS, // Se define el formato de la fecha
+      useValue: { // Se define el formato de la fecha
         parse: {
           dateInput: 'YYYY-MM-DD',
         },
@@ -37,7 +37,7 @@ export const appConfig: ApplicationConfig = {
         },
       },
     },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }, // Se define el interceptor de jwt
     importProvidersFrom(FeatherModule.pick(allIcons)),
     provideCharts(withDefaultRegisterables()),
     provideHttpClient(withInterceptorsFromDi()),

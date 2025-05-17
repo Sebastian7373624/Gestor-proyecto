@@ -23,11 +23,11 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Title } from 'chart.js';
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component';
 
-export interface User {
+export interface User { // aqui se define la interfaz de usuario
   name: string;
 }
 
-@Component({
+@Component({ // Se define el selector del componente
   selector: 'app-users',
   standalone: true,
   imports: [
@@ -51,16 +51,16 @@ export interface User {
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
-export class UsersComponent {
+export class UsersComponent { // Se define el nombre del componente
 
-  displayedColumns: string[] = [
+  displayedColumns: string[] = [ // Se definen las columnas de la tabla
     'name',
     'email',
     'role',
     'action'
   ];
 
-  breadscrums = [
+  breadscrums = [ // Se definen las rutas de la tabla
     {
       title: 'Gestión de usuarios',
       item: [],
@@ -68,18 +68,18 @@ export class UsersComponent {
     },
   ];
 
-  breadscrumsDetails = [
+  breadscrumsDetails = [ // Se definen las rutas de la tabla
     { 
       title: '',
     },
   ];
 
   // Table
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource = new MatTableDataSource<any>([]); // Se define la fuente de datos de la tabla
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
   // Search
-  userFormSearchFilter!: FormGroup;
+  userFormSearchFilter!: FormGroup; // Se define el formulario de busqueda
   usersList: any[] = [];
 
   isLoading = false;
@@ -88,23 +88,34 @@ export class UsersComponent {
     name: undefined,
     email: undefined,
   }
-  dialog: any;
+  dialog: any; // Se define el dialogo
 
-  constructor(
+  constructor( // Se define el constructor
+
     private readonly _formBuilder: FormBuilder,
     private readonly userService: UsersService,
     private readonly dialogModel: MatDialog,
     private readonly _sanckBar: MatSnackBar
   ) { }
   
-  ngOnInit(): void {
+  ngOnInit(): void { // Se define el metodo ngOnInit
     this.createUserFormSearchFilter();
     this.getAllUserByAdministrator();
     this.handleUserFilterChance('name', 'email');
   
   }
 
-  createUserFormSearchFilter() {
+  createUserFormSearchFilter() { // Se define el metodo para crear el formulario de busqueda
+    this.userFormSearchFilter = this._formBuilder.group({
+      name: [this.userDefaultFilterSearch.name],
+      email: [this.userDefaultFilterSearch.email],
+    });
+
+    this.userFormSearchFilter.valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((value) => {
+        this.getAllUserByAdministrator(value);
+      });
 
   }
 
@@ -126,7 +137,7 @@ export class UsersComponent {
 
   }
 
-  getAllUserByAdministrator(filters?: any): void {
+  getAllUserByAdministrator(filters?: any): void { // Se define el metodo para obtener todos los usuarios
     this.isLoading = true;
     this.userService.getAllUserByAdministrator(filters).subscribe({
       next: (response) => {
@@ -138,13 +149,13 @@ export class UsersComponent {
     });
   }
 
-  openModalCreateUser(): void {
+  openModalCreateUser(): void { // Se define el metodo para abrir el modal de crear usuario
   const dialogRef = this.dialogModel.open(ModalCreateUserComponent, {
     width: '600px',
     disableClose: true,
   });
 
-  dialogRef.afterClosed().subscribe(result => {
+  dialogRef.afterClosed().subscribe(result => { // Se define el metodo para cerrar el modal
     if (result === 'created') {
       this.getAllUserByAdministrator(); // Recarga la lista
       this._sanckBar.open('Usuario creado exitosamente', 'Cerrar', {
@@ -155,7 +166,7 @@ export class UsersComponent {
   }
 
 
-  openModalUpdateUser(user: any): void {
+  openModalUpdateUser(user: any): void { // Se define el metodo para abrir el modal de editar usuario
     const dialogRef = this.dialogModel.open(ModalEditUsersComponent, {
     width: '600px',
     disableClose: true,
@@ -172,7 +183,7 @@ export class UsersComponent {
   });
   }
 
-  openModalDeleteUser(id: number) {
+  openModalDeleteUser(id: number) { // Se define el metodo para abrir el modal de eliminar usuario
   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
     width: '400px',
     data: {
@@ -181,7 +192,7 @@ export class UsersComponent {
     }
   });
 
-  dialogRef.afterClosed().subscribe((result: boolean) => {
+  dialogRef.afterClosed().subscribe((result: boolean) => { // Se define el metodo para cerrar el modal
     if (result === true) {
       console.log('Usuario con eliminado', id);
     }
