@@ -1,30 +1,22 @@
-// Importa DataTypes desde Sequelize 
-const { DataTypes } = require('sequelize'); 
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database'); // importa tu instancia de Sequelize correctamente
 
-// Define el modelo de la tabla 'permissions' en Sequelize
-const sequalize = require.define('permissions', { 
-
-    // Define la columna 'id' como clave primaria, entera y autoincremental 
-    id: { 
-        type: DataTypes.INTEGER, // Define que el tipo es entero
-        primaryKey: true, //Define que el id es la llave primaria
-        autoIncrement: true //Define que el id se autoincrementa
+const Permisos = sequelize.define('permisos', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
     },
-
-    // Define la columna 'name' como cadena de texto, no nula y única
-    name: { 
-        type: DataTypes.STRING, 
-        allowNull: false, 
-        unique: true 
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
     }
-
 }, {
-    // Desactiva las marcas de tiempo predeterminadas en Sequelize 
-    timestamps: false, 
-
-    // Define manualmente el nombre de la tabla
-    tableName: 'permissions',
+    timestamps: false,
+    tableName: 'permisos',
 });
 
-// Exporta el modelo 'permissions' para su uso en otras partes del proyecto
-module.exports = permissions; 
+module.exports = Permisos;
+// Exporta el modelo 'permisos' para su uso en otras partes del proyecto
+// module.exports = Permisos; // Esta línea ya está incluida al final del código

@@ -1,6 +1,6 @@
 const  {ROLS} = require('../utils/constants');
-const Proyects = require('../models/proyects.model');
-const User = require('../models/user.model');
+const Proyects = require('../models/proyects.models');
+const User = require('../models/user.models');
 
 exports.createproyect = async (data) => {
     console.log('Datos recibidos en el servicio:', data); // Log para depurar

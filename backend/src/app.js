@@ -1,22 +1,34 @@
-// Importamos los módulos necesarios para crear el servidor y manejar CORS
-const express = require ('express'); 
-const cors = require ('cors'); 
+// Importamos los módulos necesarios
+const express = require('express'); 
+const cors = require('cors'); 
+const morgan = require('morgan');
+require('dotenv').config(); // Carga las variables de entorno
 
-const app = express(); // Se crea una instancia de la aplicación Express
+// Creamos la instancia de Express
+const app = express();
 
-// Configuración para permitir que la aplicación procese JSON y evitar problemas de CORS
-app.use(express.json()); // Habilita el uso de JSON en las peticiones
-app.use(cors()); // Permite solicitudes de otros dominios
+// Middleware de logs HTTP
+app.use(morgan('dev'));
 
-// Importar rutas para manejar usuarios, autenticación y proyectos
-const userRoutes = require ('./routes/user.routes'); 
-const authRoutes = require ('./routes/auth.routes'); 
-const proyectRoutes = require ('./routes/proyect.routes');
+// Middleware para manejar errores genéricos
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Algo salió mal!');
+});
 
-// Definimos las rutas de la API y las asociamos a los archivos correspondientes
-app.use('/api/v1', userRoutes); // Ruta para los usuarios
-app.use('/api/v1/auth', authRoutes); // Ruta para autenticación
-app.use('/api/v1/proyects', proyectRoutes); // Ruta para proyectos
+// Configuración para procesar JSON y permitir CORS
+app.use(express.json());
+app.use(cors());
 
-// Exportamos la instancia de la aplicación para que pueda ser utilizada en otros archivos
-module.exports = app; 
+// Importamos las rutas
+const userRoutes = require('./routes/user.routes'); 
+const authRoutes = require('./routes/auth.routes'); 
+const proyectRoutes = require('./routes/proyect.routes');
+
+// Asociamos las rutas con su prefijo
+app.use('/api/v1', userRoutes); 
+app.use('/api/v1/auth', authRoutes); 
+app.use('/api/v1/proyects', proyectRoutes);
+
+// Exportamos la app
+module.exports = app;

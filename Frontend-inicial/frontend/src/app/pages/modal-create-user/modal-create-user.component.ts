@@ -45,7 +45,7 @@ export class ModalCreateUserComponent implements OnInit { // Se define el nombre
         ).subscribe((value)=> { // Se llama a la funcion que valida la contraseña
             this.validatePassword(value);
         });
-        console.log('Ando caminando con un flow violento3')
+        console.log('Constructor ModalCreateUserComponent'); // Mensaje de consola para verificar que se ha llamado al constructor
 
     }
 
@@ -61,16 +61,17 @@ export class ModalCreateUserComponent implements OnInit { // Se define el nombre
         }
     }
         
-    createFormUsers() { // Se crea el formulario
-        this.formCreateUser = this._formBuilder.group({
-            nombre: ['', Validators.required],
-            email: ['', Validators.required],
-            password: ['', Validators.required],
-            confirmPassword: ['', Validators.required],
-            role: ['', [Validators.required]],
-            administrator: ['']
-        });
-    }
+   createFormUsers() {
+  this.formCreateUser = this._formBuilder.group({
+    nombre: ['', Validators.required],
+    email: ['', Validators.required],
+    password: ['', Validators.required],
+    confirmPassword: ['', Validators.required],
+    role: ['', Validators.required],
+    administrator_id: [''] // Este sí lo usas
+  });
+}
+
 
     getAllAdministrator() { // Se obtiene todos los administradores
         this._userService.getAllAdministrator().subscribe({
@@ -78,7 +79,8 @@ export class ModalCreateUserComponent implements OnInit { // Se define el nombre
                 this.administratorValues = res.users;
             },
             error: (err) => {
-                console.error(err);
+                console.error('Error al obtener los administradores:', err);
+                Swal.fire('Error', 'No se pudieron cargar los administradores', 'error');
             }
         });
     }
@@ -87,12 +89,12 @@ export class ModalCreateUserComponent implements OnInit { // Se define el nombre
         if (event.value === '1') {
             this.hideAdministratorField();
         } else {
-            this.showAdministratorField
+            this.showAdministratorField();
+
         }
     }
 
     onSubmit() { // Se llama a la funcion que envia el formulario
-        console.log(this.getAllAdministrator());
         if (this.formCreateUser.invalid) {
             Swal.fire('Error', 'Por favor completa todos los campos', 'error');
             return;

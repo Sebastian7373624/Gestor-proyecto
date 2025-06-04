@@ -4,8 +4,8 @@ const { DataTypes } = require('sequelize');
 // Importa la conexión a la base de datos desde el archivo de configuración 
 const sequalize = require('../config/database'); 
 
-// Define el modelo 'rols_permissions' en Sequelize
-const rols_permissions = sequalize.define('rols_permissions', {
+// Define el modelo 'roles_permisos' en Sequelize
+const roles_permisos = sequalize.define('roles_permisos', {
 
     // Define la columna 'id' como clave primaria, entera y autoincremental
     id: { 
@@ -14,18 +14,18 @@ const rols_permissions = sequalize.define('rols_permissions', {
         autoIncrement: true 
     },
 
-    // Define la columna 'rol_id' como clave foránea referenciada a 'rols_permissions' 
+    // Define la columna 'rol_id' como clave foránea referenciada a 'roles_permisos' 
     rol_id: { 
         type: DataTypes.INTEGER,
         allowNull: false, 
-        references: { model: 'rols_permissions', key: 'id' }
+        references: { model: 'roles_permisos', key: 'id' }
     },
 
-    // Define la columna 'permission_id' como clave foránea referenciada a 'permissions'
-    permission_id: { 
+    // Define la columna 'permisos_id' como clave foránea referenciada a 'permisos'
+    permisos_id: { 
         type: DataTypes.INTEGER, 
         allowNull: false, 
-        references: { model: 'permissions', key: 'id' } 
+        references: { model: 'permisos', key: 'id' } 
     }
 
 }, {
@@ -33,8 +33,8 @@ const rols_permissions = sequalize.define('rols_permissions', {
     timestamps: false, 
 
     // Define el nombre de la tabla en la base de datos
-    tableName: 'rols_permissions',
+    tableName: 'roles_permisos',
 });
 
-// Exporta el modelo 'rols_permissions' 
-module.exports = rols_permissions;
+// Exporta el modelo 'roles_permisos' 
+module.exports = roles_permisos;

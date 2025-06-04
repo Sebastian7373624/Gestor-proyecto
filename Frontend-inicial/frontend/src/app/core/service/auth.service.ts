@@ -33,7 +33,8 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<any> {
-    const endpoint = `${this.urlBaseServices}/api/v1/auth/auth/login`;
+    const endpoint = `${this.urlBaseServices}/api/v1/auth/login`;
+
     return this.http.post<any>(endpoint, { email, password });
   }
 
@@ -58,8 +59,8 @@ export class AuthService {
   }
 
   setToken(token: string): void {
-    sessionStorage.setItem('token', token);
-  }
+  sessionStorage.setItem('accessToken', token);
+}
 
   getToken(): string | null {
     return sessionStorage.getItem('token');

@@ -1,26 +1,43 @@
-// Importa los modelos de la base de datos
-const User = require('./user.model');
-const Proyect = require('./proyects.model');
-const UserProyect = require('./users_proyects.model');
+const User = require('./user.models');
+const Proyect = require('./proyects.models');
+const UsersProjects = require('./users_proyects.models');
 
-// Relación muchos a muchos entre User y Proyect a través de UserProyect
+const Role = require('./rols.models');                 // Modelo Roles
+const Permission = require('./permissions.model');     // Modelo Permisos
+const RolePermission = require('./roles_permisos.models'); // Tabla intermedia Roles-Permisos
+
+// Asociaciones User - Proyects (ya tienes)
 User.belongsToMany(Proyect, { 
-    through: UserProyect,           // Tabla intermedia
-    foreignKey: 'user_id',          // Clave foránea en la tabla intermedia que apunta al usuario
-    as: 'userproyects'              // Alias para acceder a los proyectos de un usuario
+    through: UsersProjects,
+    foreignKey: 'user_id',          
+    as: 'userproyects'              
 });
 
-Proyect.belongsToMany(User, { 
-    through: UserProyect,           // Tabla intermedia
-    foreignKey: 'proyect_id',       // Clave foránea en la tabla intermedia que apunta al proyecto
-    as: 'proyectusers'              // Alias para acceder a los usuarios de un proyecto
+Proyect.belongsToMany(User, {  
+    through: UsersProjects,
+    foreignKey: 'proyect_id',       
+    as: 'proyectusers'              
 });
 
-// Relación uno a muchos: un proyecto pertenece a un administrador (que es un usuario)
-Proyect.belongsTo(User, { 
-    foreignKey: 'administrator_id', // Clave foránea que apunta al administrador del proyecto
-    as: 'administrator'             // Alias para acceder al administrador desde el proyecto
+Proyect.belongsTo(User, {
+    foreignKey: 'administrator_id',
+    as: 'administrator'             
 });
 
-// Exporta los modelos para usarlos en otras partes del proyecto
-module.exports = { User, Proyect, UserProyect };
+// Asociaciones Roles - Permisos (muchos a muchos)
+Role.belongsToMany(Permission, {
+    through: RolePermission,
+    foreignKey: 'role_id',
+    otherKey: 'permission_id',
+    as: 'permissions'
+});
+
+Permission.belongsToMany(Role, {
+    through: RolePermission,
+    foreignKey: 'permission_id',
+    otherKey: 'role_id',
+    as: 'roles'
+});
+
+module.exports = { User, Proyect, UsersProjects, Role, Permission, RolePermission };
+// Exportamos los modelos para que puedan ser utilizados en otros archivos

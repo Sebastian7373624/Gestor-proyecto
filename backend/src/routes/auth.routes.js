@@ -7,7 +7,7 @@ const authController = require('../controllers/auth.controller');
 
 // Ruta POST para iniciar sesión (login)
 // Al hacer POST a /auth/login se ejecuta la función login del controlador
-router.post('/auth/login', authController.login);
+router.post('/login', authController.login);
 
 // Exporta el router para usarlo en la app principal
 module.exports = router;

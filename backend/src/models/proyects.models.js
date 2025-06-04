@@ -1,7 +1,7 @@
 // Importa DataTypes desde Sequelize 
 const { DataTypes } = require('sequelize'); 
 
-const User = require('./user.model'); // Ajusta la ruta si es necesario
+const User = require('./user.models'); // Ajusta la ruta si es necesario
 
 
 // Importa la conexión a la base de datos desde el archivo de configuración 
