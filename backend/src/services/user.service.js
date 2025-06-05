@@ -2,33 +2,40 @@ const user = require('../models/user.models');
 const bcrypt = require('bcryptjs'); 
 
 
+
+
 // Función para crear un usuario
 exports.createUser = async (name, email, password, rol_id, administrator_id) => {
-    try{
-       
+    try {
         // Verificar si el usuario ya existe
-        const userExists = await user.findOne({where : { email }}); 
-        if (userExists){
+        const userExists = await user.findOne({ where: { email } });
+        if (userExists) {
             throw new Error('El usuario ya existe');
         }
 
         // Hashear la contraseña antes de guardarla
-         const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        // // Crear un nuevo usuario
-        const newUser = await user.create({
+        // Crear un nuevo usuario
+        const newUserData = {
             name,
             email,
             password: hashedPassword,
-            rol_id,
-            administrator_id
-        });
+            rol_id
+        };
 
-     return newUser;
-    }catch(err){
-        throw new Error(`Error al crear el usuario: ${err.message}`); 
+        // Solo agregar administrator_id si existe y no es null
+        if (administrator_id) {
+            newUserData.administrator_id = administrator_id;
+        }
+
+        const newUser = await user.create(newUserData);
+        return newUser;
+    } catch (error) {
+        throw new Error('Error al crear el usuario: ' + error.message);
     }
 };
+
 
 // Función para obtener usuarios por rol
 exports.getAllUsersByRolId = async (rol_id) => {
@@ -101,3 +108,15 @@ exports.deleteUsers = async (id, admin_from_token) => {
     }
 };
 
+// Función para obtener todos los usuarios bajo un administrador específico
+exports.getAllUsersByAdministratorId = async (administrator_id) => {
+    try {
+        const users = await user.findAll({
+            where: { administrator_id },
+            attributes: { exclude: ['password'] }
+        });
+        return users;
+    } catch (err) {
+        throw new Error(`Error al obtener usuarios por administrador: ${err.message}`);
+    }
+};

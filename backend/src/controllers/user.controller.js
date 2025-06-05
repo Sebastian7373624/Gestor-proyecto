@@ -4,19 +4,21 @@ const userService = require('../services/user.service');
 // Controlador para crear un nuevo usuario
 exports.createUser = async (req, res) => {
     try {
-        // Extrae los datos del cuerpo de la solicitud
-        res.status(200).json({ message: req.body });
+        console.log('BODY RECIBIDO:', req.body); 
         const { name, email, password, rol_id } = req.body;
-        const administrator_id=1;
-        // Llama al servicio para crear un usuario con los datos proporcionados
-      const newUser = await userService.createUser(name, email, password, rol_id, administrator_id);
-        // Responde con éxito y el usuario creado
-        res.status(200).json({ message: 'Usuario creado con éxito', user: newUser });
+
+        const administrator_id = 1;
+
+        const newUser = await userService.createUser(name, email, password, rol_id, administrator_id);
+
+        return res.status(200).json({ message: 'Usuario creado con éxito', user: newUser });
     } catch (err) {
-        // Responde con error en caso de fallo
-        res.status(500).json({ message: err.message });
+        console.error('ERROR AL CREAR USUARIO:', err); 
+        return res.status(500).json({ message: err.message });
     }
 };
+// Importa el servicio de usuarios
+// Controlador para obtener un usuario por su ID
 
 // Controlador para obtener todos los usuarios asociados a un administrador
 exports.getAllUsersByAdministratorId = async (req, res) => {
@@ -32,10 +34,10 @@ exports.getAllUsersByAdministratorId = async (req, res) => {
         
         // Responde con éxito y la lista de usuarios
         res.status(200).json({ message: 'Usuarios consultados con éxito', users });
-    } catch (error) {
-        // Responde con error si no se pueden obtener los usuarios
-        res.status(500).json({ message: 'Error al obtener usuarios', error });
-    }
+    } catch (err) {
+    console.error('Error en createUser:', err); // Esto te mostrará el error exacto
+    res.status(500).json({ message: err.message });
+}
 };
 
 // Controlador para obtener todos los usuarios de un rol específico

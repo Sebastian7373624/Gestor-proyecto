@@ -29,6 +29,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     styleUrl: './modal-create-user.component.scss'
 })
 export class ModalCreateUserComponent implements OnInit {
+[x: string]: any;
 
     formCreateUser!: FormGroup;
     administratorValues: any[] = [];

@@ -41,11 +41,15 @@ const users = sequalize.define('users', {
     },
 
     // Define la columna 'administrator_id' como clave foránea referenciada a 'users'
-    administrator_id: { 
-        type: DataTypes.INTEGER, 
-        allowNull: false, 
-        references: { model: 'users', key: 'id' } 
-    }
+    administrator_id: {
+  type: DataTypes.INTEGER,
+  allowNull: true, // <-- Esto es importante si puede ser null
+  references: {
+    model: 'users', // Asegúrate de que sea correcto
+    key: 'id'
+  }
+}
+
 
 }, {
     // Desactiva las marcas de tiempo automáticas en Sequelize
