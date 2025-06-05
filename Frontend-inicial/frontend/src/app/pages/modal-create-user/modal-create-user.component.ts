@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,70 +12,71 @@ import { UsersService } from 'app/services/users/users.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-@Component({ // Se define el selector del componente
+@Component({
     selector: 'app-modal-create-user',
     standalone: true,
-    imports: [CommonModule, FormsModule, MatIconModule, MatButtonModule, MatSelectModule, MatIconModule, MatFormFieldModule,
-        MatInputModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, ReactiveFormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatIconModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule
+    ],
     templateUrl: './modal-create-user.component.html',
     styleUrl: './modal-create-user.component.scss'
 })
-export class ModalCreateUserComponent implements OnInit { // Se define el nombre del componente
+export class ModalCreateUserComponent implements OnInit {
 
     formCreateUser!: FormGroup;
-    administratorValues: any [] = [];
-    showFieldAdministrator: Boolean = false;
+    administratorValues: any[] = [];
+    showFieldAdministrator: boolean = false;
     loggedUser: any = null;
 
-
-    constructor( // Se define el constructor del componente
+    constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private readonly _formBuilder: FormBuilder,
         private readonly _userService: UsersService,
         private readonly _dialogRef: MatDialogRef<ModalCreateUserComponent>,
-        private readonly _snackBar: MatSnackBar,
-    )
+        private readonly _snackBar: MatSnackBar
+    ) {
+        this.createFormUsers();
 
-    {
-        this.createFormUsers(); // Se llama a la funcion que crea el formulario
-        this.formCreateUser.controls['confirmPassword'].valueChanges.pipe(
-            debounceTime(1000),
-            distinctUntilChanged()
-            
-        ).subscribe((value)=> { // Se llama a la funcion que valida la contraseña
-            this.validatePassword(value);
-        });
-        console.log('Constructor ModalCreateUserComponent'); // Mensaje de consola para verificar que se ha llamado al constructor
-
+        this.formCreateUser.controls['confirmPassword'].valueChanges
+            .pipe(debounceTime(1000), distinctUntilChanged())
+            .subscribe((value) => {
+                this.validatePassword(value);
+            });
     }
 
-    ngOnInit(): void { // Se llama a la funcion que obtiene todos los administradores
+    ngOnInit(): void {
         this.getAllAdministrator();
 
-        const userString = localStorage.getItem('user'); // Se obtiene el usuario logueado
+        const userString = localStorage.getItem('user');
         if (userString) {
             this.loggedUser = JSON.parse(userString);
             this.formCreateUser.patchValue({
-                administrator: this.loggedUser.id // o cualquier campo que necesites
+                administrator: this.loggedUser.id
             });
         }
     }
-        
-   createFormUsers() {
-  this.formCreateUser = this._formBuilder.group({
-    nombre: ['', Validators.required],
-    email: ['', Validators.required],
-    password: ['', Validators.required],
-    confirmPassword: ['', Validators.required],
-    role: ['', Validators.required],
-    administrator_id: [''] // Este sí lo usas
-  });
-}
 
+    createFormUsers() {
+        this.formCreateUser = this._formBuilder.group({
+            nombre: ['', Validators.required],
+            email: ['', Validators.required],
+            password: ['', Validators.required],
+            confirmPassword: ['', Validators.required],
+            role: ['', Validators.required],
+            administrator_id: ['']
+        });
+    }
 
-    getAllAdministrator() { // Se obtiene todos los administradores
+    getAllAdministrator() {
         this._userService.getAllAdministrator().subscribe({
-            next:(res) => {
+            next: (res) => {
                 this.administratorValues = res.users;
             },
             error: (err) => {
@@ -85,44 +86,48 @@ export class ModalCreateUserComponent implements OnInit { // Se define el nombre
         });
     }
 
-    onChangeRole(event: any) { // Se llama a la funcion que cambia el rol
+    onChangeRole(event: any) {
         if (event.value === '1') {
             this.hideAdministratorField();
         } else {
             this.showAdministratorField();
-
         }
     }
 
-    onSubmit() { // Se llama a la funcion que envia el formulario
-        if (this.formCreateUser.invalid) {
-            Swal.fire('Error', 'Por favor completa todos los campos', 'error');
-            return;
-        }
+   onSubmit() {
+  if (this.formCreateUser.valid) {
+    const formValue = this.formCreateUser.value;
 
-        const userDataInformation = { // Se crea el objeto con la informacion del usuario
-            name: this.formCreateUser.get('nombre')?.value,
-            email: this.formCreateUser.get('email')?.value,
-            password: this.formCreateUser.get('password')?.value,
-            rol_id: Number(this.formCreateUser.get('role')?.value),
-            administrator_id: this.formCreateUser.get('administrator_id')?.value
-        };
-        console.log(userDataInformation);
+    // Preparar el payload
+    const userDataInformation: any = {
+      name: formValue.nombre,
+      email: formValue.email,
+      password: formValue.password,
+      rol_id: +formValue.role
+    };
 
-        this._userService.createUser(userDataInformation).subscribe({ // Se llama a la funcion que crea el usuario
-            next: (Response) => {
-                this._snackBar.open(Response.message, 'Cerrar', {duration: 5000});
-                this.formCreateUser.reset();
-                this._dialogRef.close(true);
-            },
-            error: (error) => {
-                const errorMesage = error.error?.result || 'Ocurrio un error inesperado. Por favor intenta de nuevo.'; // Se crea el objeto con la informacion del usuario
-                this._snackBar.open(error.message, 'Cerrar', {duration: 5000});
-            }
-        });
+    // Solo incluir administrator_id si fue asignado y no está vacío
+    if (formValue.administrator_id) {
+      userDataInformation.administrator_id = formValue.administrator_id;
     }
 
-    private validatePassword(confirmPassword: string) { // Se llama a la funcion que valida la contraseña
+    this._userService.createUser(userDataInformation).subscribe({
+      next: (response) => {
+        this._snackBar.open(response.message, 'Cerrar', { duration: 5000 });
+        this.formCreateUser.reset();
+        this._dialogRef.close(true);
+      },
+      error: (error) => {
+        const errorMessage = error.error?.result || 'Error al crear usuario.';
+        this._snackBar.open(errorMessage, 'Cerrar', { duration: 5000 });
+      }
+    });
+  }
+}
+
+
+
+    private validatePassword(confirmPassword: string) {
         const password = this.formCreateUser.get('password')?.value;
         if (password !== confirmPassword) {
             this.formCreateUser.get('confirmPassword')?.setErrors({ invalid: true });
@@ -131,19 +136,15 @@ export class ModalCreateUserComponent implements OnInit { // Se define el nombre
         }
     }
 
-    private showAdministratorField() { // Se llama a la funcion que muestra el campo de administrador
+    private showAdministratorField() {
         this.showFieldAdministrator = true;
         this.formCreateUser.get('administrator_id')?.setValidators([Validators.required]);
         this.formCreateUser.get('administrator_id')?.updateValueAndValidity();
     }
 
-    private hideAdministratorField() { // Se llama a la funcion que oculta el campo de administrador
+    private hideAdministratorField() {
         this.showFieldAdministrator = false;
         this.formCreateUser.get('administrator_id')?.clearValidators();
         this.formCreateUser.get('administrator_id')?.updateValueAndValidity();
     }
 }
-
-// function suscribe(arg0: (value: any) => void) {
-//     throw new Error('Function not implemented.');
-// }
