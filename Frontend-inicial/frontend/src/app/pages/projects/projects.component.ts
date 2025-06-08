@@ -42,6 +42,7 @@ interface Usuario {
       <!-- Información General -->
       <section>
         <h2>Información General</h2>
+        <!-- Campos del formulario -->
         <div class="form-group">
           <label for="nombre">Nombre:</label>
           <input id="nombre" type="text" formControlName="nombre" />
@@ -83,6 +84,7 @@ interface Usuario {
           <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" />
         </div>
       </section>
+      
 
       <!-- Historial Médico -->
       <section>
@@ -222,64 +224,52 @@ interface Usuario {
       color: #0D47A1;
     }
     .form-group {
-      display: flex;
-      flex-direction: column;
       margin-bottom: 15px;
     }
     label {
-      font-weight: 700;
-      margin-bottom: 5px;
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
     }
-    input[type="text"],
-    input[type="number"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="date"] {
-      padding: 8px 12px;
-      font-size: 1rem;
+    input {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 4px;
-      transition: border-color 0.3s;
-    }
-    input:focus {
-      border-color: #0D47A1;
-      outline: none;
+      box-sizing: border-box;
+      font-size: 14px;
+      font-weight: 400;
     }
     button {
-      padding: 12px 24px;
       background-color: #0D47A1;
       color: white;
       border: none;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 1rem;
+      border-radius: 8px;
+      padding: 12px 24px;
       cursor: pointer;
-      transition: background-color 0.3s;
-      margin-top: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      margin-top: 15px;
     }
-    button:disabled {
-      background-color: #9E9E9E;
+    button[disabled] {
+      background-color: #ccc;
       cursor: not-allowed;
     }
-    button:hover:not(:disabled) {
-      background-color: #08397f;
-    }
-    table {
+    .tabla-usuarios {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
+      margin-top: 20px;
     }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px 15px;
+    .tabla-usuarios th,
+    .tabla-usuarios td {
+      border: 1px solid #ddd;
+      padding: 10px 8px;
       text-align: left;
+      font-size: 13px;
     }
-    th {
+    .tabla-usuarios th {
       background-color: #0D47A1;
       color: white;
-    }
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
     }
   `]
 })
@@ -291,7 +281,7 @@ export class ProjectsComponent {
     this.projectForm = this.fb.group({
       nombre: ['', Validators.required],
       apellidos: ['', Validators.required],
-      edad: [null, [Validators.required, Validators.min(0)]],
+      edad: [null, Validators.required],
       sexo: ['', Validators.required],
       tipoSangre: ['', Validators.required],
       cedula: ['', Validators.required],
@@ -299,7 +289,6 @@ export class ProjectsComponent {
       correo: ['', [Validators.required, Validators.email]],
       eps: ['', Validators.required],
       fechaNacimiento: ['', Validators.required],
-
       paciente: ['', Validators.required],
       alergias: ['', Validators.required],
       antecedentes: ['', Validators.required],
@@ -307,9 +296,8 @@ export class ProjectsComponent {
       ultimaConsulta: ['', Validators.required],
       diagnosticoActual: ['', Validators.required],
       tratamiento: ['', Validators.required],
-
       nombrePaciente: ['', Validators.required],
-      edadReceta: [null, [Validators.required, Validators.min(0)]],
+      edadReceta: [null, Validators.required],
       sexoReceta: ['', Validators.required],
       fechaReceta: ['', Validators.required],
       diagnosticoReceta: ['', Validators.required],
@@ -317,18 +305,27 @@ export class ProjectsComponent {
       dosis: ['', Validators.required],
       frecuencia: ['', Validators.required],
       duracion: ['', Validators.required],
-      firma: ['', Validators.required],
+      firma: ['', Validators.required]
     });
+
+    // Cargar desde localStorage al iniciar
+    const storedUsuarios = localStorage.getItem('usuarios');
+    if (storedUsuarios) {
+      this.usuarios = JSON.parse(storedUsuarios);
+    }
   }
 
-  onSubmit() {
-    if (this.projectForm.invalid) return;
-
-    this.usuarios.push(this.projectForm.value);
-    this.projectForm.reset();
+  onSubmit(): void {
+    if (this.projectForm.valid) {
+      const nuevoUsuario: Usuario = this.projectForm.value;
+      this.usuarios.push(nuevoUsuario);
+      localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
+      this.projectForm.reset();
+    }
   }
 
-  eliminarUsuario(index: number) {
+  eliminarUsuario(index: number): void {
     this.usuarios.splice(index, 1);
+    localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
   }
 }

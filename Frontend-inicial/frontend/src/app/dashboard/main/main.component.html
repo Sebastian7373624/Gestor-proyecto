@@ -9,22 +9,22 @@
     <div class="card">
       <h2>Proyectos Activos</h2>
       <p> 1 en curso y 1 ya resuelto</p>
-      <button>Proyectos</button>
+      <button (click)="alert('Proyectos')">Proyectos</button>
     </div>
     <div class="card">
       <h2>Citas Médicas</h2>
       <p>1 próximas</p>
-      <button>Agendar/Ver</button>
+      <button (click)="alert('Agendar/Ver')">Agendar/Ver</button>
     </div>
     <div class="card">
       <h2>Equipo de Trabajo</h2>
       <p> 1 colaborador</p>
-      <button>Sebastian Quintero Montoya</button>
+      <button (click)="alert('Sebastian Quintero Montoya')">Sebastian Quintero Montoya</button>
     </div>
     <div class="card">
       <h2>Historial del Paciente</h2>
       <p>Última entrada: Hoy</p>
-      <button>Consultar</button>
+      <button (click)="alert('Consultar Historial')">Consultar</button>
     </div>
   </div>
 
@@ -53,11 +53,12 @@
   <div class="reports-section">
     <h2>Reportes Médicos</h2>
     <div class="reports-buttons">
-      <button>Descargar PDF</button>
-      <button>Subir Nuevo</button>
+      <button (click)="alert('Descargar PDF')">Descargar PDF</button>
+      <button (click)="alert('Subir Nuevo Reporte')">Subir Nuevo</button>
     </div>
   </div>
 </div>
-    <div class="dashboard-footer">
-        <p>&copy; 2023 Gestor de Proyectos Médicos. Todos los derechos reservados.</p>
-    </div>
+<div class="dashboard-footer">
+  <p>&copy; 2023 Gestor de Proyectos Médicos. Todos los derechos reservados.</p>
+  <button routerLink="/dashboard/projects" (click)="alert('Navegando a Proyectos')">Ver Proyectos</button>
+</div>

@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { MainLayoutComponent } from './layout/app-layout/main-layout/main-layout.component';
 import { AuthGuard } from '@core/guard/auth.guard';
+import { MainComponent } from './dashboard/main/main.component';
 
 export const APP_ROUTE: Route[] = [ //APP_ROUTE arreglo de tipo route
   {

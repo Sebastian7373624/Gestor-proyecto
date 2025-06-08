@@ -11,6 +11,9 @@ import { Component } from '@angular/core';
   ],
 })
 export class MainComponent {
+alert(arg0: string) {
+throw new Error('Method not implemented.');
+}
   
 
   constructor() {
