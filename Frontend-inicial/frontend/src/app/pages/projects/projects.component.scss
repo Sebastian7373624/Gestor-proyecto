@@ -67,3 +67,54 @@ input:focus {
   border-color: #3498db;
   outline: none;
 }
+
+/* Estilo para inputs inválidos */
+input.ng-invalid.ng-touched {
+  border-color: #e74c3c;
+  background-color: #fdecea;
+}
+
+/* Mensajes de error */
+.error {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Estilos para botones */
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #3498db;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  grid-column: span 2;
+}
+
+button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+/* Espacio entre botones si hay más de uno */
+button + button {
+  margin-left: 12px;
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+
+  button {
+    grid-column: span 1;
+  }
+}

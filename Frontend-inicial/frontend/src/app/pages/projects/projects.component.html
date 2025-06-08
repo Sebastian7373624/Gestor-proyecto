@@ -1,173 +1,152 @@
 <div class="container">
-  <!-- INFORMACIÓN GENERAL -->
-  <section>
-    <h2>Información General</h2>
-    <form>
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <!-- Información General -->
+    <section>
+      <h2>Información General</h2>
       <div class="form-group">
-        <label>Nombre:</label>
-        <input type="text" name="nombre" />
+        <label for="nombre">Nombre:</label>
+        <input id="nombre" type="text" formControlName="nombre" />
       </div>
 
       <div class="form-group">
-        <label>Apellidos:</label>
-        <input type="text" name="apellidos" />
+        <label for="apellidos">Apellidos:</label>
+        <input id="apellidos" type="text" formControlName="apellidos" />
       </div>
 
       <div class="form-group">
-        <label>Edad:</label>
-        <input type="number" name="edad" />
+        <label for="edad">Edad:</label>
+        <input id="edad" type="number" formControlName="edad" />
       </div>
 
       <div class="form-group">
-        <label>Sexo:</label>
-        <input type="text" name="sexo" />
+        <label for="sexo">Sexo:</label>
+        <input id="sexo" type="text" formControlName="sexo" />
       </div>
 
       <div class="form-group">
-        <label>Tipo de sangre:</label>
-        <input type="text" name="tipoSangre" />
+        <label for="tipoSangre">Tipo de sangre:</label>
+        <input id="tipoSangre" type="text" formControlName="tipoSangre" />
       </div>
 
       <div class="form-group">
-        <label>Cédula:</label>
-        <input type="text" name="cedula" />
+        <label for="cedula">Cédula:</label>
+        <input id="cedula" type="text" formControlName="cedula" />
       </div>
 
       <div class="form-group">
-        <label>Teléfono:</label>
-        <input type="tel" name="telefono" />
+        <label for="telefono">Teléfono:</label>
+        <input id="telefono" type="tel" formControlName="telefono" />
       </div>
 
       <div class="form-group">
-        <label>Correo electrónico:</label>
-        <input type="email" name="correo" />
+        <label for="correo">Correo electrónico:</label>
+        <input id="correo" type="email" formControlName="correo" />
       </div>
 
       <div class="form-group">
-        <label>EPS:</label>
-        <input type="text" name="eps" />
+        <label for="eps">EPS:</label>
+        <input id="eps" type="text" formControlName="eps" />
       </div>
 
       <div class="form-group">
-        <label>Fecha de nacimiento:</label>
-        <input type="date" name="fechaNacimiento" />
+        <label for="fechaNacimiento">Fecha de nacimiento:</label>
+        <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" />
       </div>
-    </form>
-  </section>
+    </section>
 
-  <!-- HISTORIAL MÉDICO -->
-  <section>
-    <h2>Historial Médico</h2>
-    <form>
+    <!-- Historial Médico -->
+    <section>
+      <h2>Historial Médico</h2>
       <div class="form-group">
-        <label>Paciente:</label>
-        <input type="text" name="paciente" />
+        <label for="paciente">Paciente:</label>
+        <input id="paciente" type="text" formControlName="paciente" />
       </div>
 
       <div class="form-group">
-        <label>Alergias:</label>
-        <input type="text" name="alergias" />
+        <label for="alergias">Alergias:</label>
+        <input id="alergias" type="text" formControlName="alergias" />
       </div>
 
       <div class="form-group">
-        <label>Antecedentes médicos:</label>
-        <input type="text" name="antecedentes" />
+        <label for="antecedentes">Antecedentes médicos:</label>
+        <input id="antecedentes" type="text" formControlName="antecedentes" />
       </div>
 
       <div class="form-group">
-        <label>Medicamentos actuales:</label>
-        <input type="text" name="medicamentos" />
+        <label for="medicamentos">Medicamentos actuales:</label>
+        <input id="medicamentos" type="text" formControlName="medicamentos" />
       </div>
 
       <div class="form-group">
-        <label>Fecha de última consulta:</label>
-        <input type="date" name="ultimaConsulta" />
+        <label for="ultimaConsulta">Fecha de última consulta:</label>
+        <input id="ultimaConsulta" type="date" formControlName="ultimaConsulta" />
       </div>
 
       <div class="form-group">
-        <label>Diagnóstico actual:</label>
-        <input type="text" name="diagnosticoActual" />
+        <label for="diagnosticoActual">Diagnóstico actual:</label>
+        <input id="diagnosticoActual" type="text" formControlName="diagnosticoActual" />
       </div>
 
       <div class="form-group">
-        <label>Tratamiento médico:</label>
-        <input type="text" name="tratamiento" />
+        <label for="tratamiento">Tratamiento médico:</label>
+        <input id="tratamiento" type="text" formControlName="tratamiento" />
       </div>
-    </form>
-  </section>
+    </section>
 
-  <!-- RECETA MÉDICA -->
-  <section>
-    <h2>Receta Médica</h2>
-    <form>
+    <!-- Receta Médica -->
+    <section>
+      <h2>Receta Médica</h2>
       <div class="form-group">
-        <label>Nombre del paciente:</label>
-        <input type="text" name="nombrePaciente" />
+        <label for="nombrePaciente">Nombre del paciente:</label>
+        <input id="nombrePaciente" type="text" formControlName="nombrePaciente" />
       </div>
 
       <div class="form-group">
-        <label>Edad:</label>
-        <input type="number" name="edadReceta" />
+        <label for="edadReceta">Edad:</label>
+        <input id="edadReceta" type="number" formControlName="edadReceta" />
       </div>
 
       <div class="form-group">
-        <label>Sexo:</label>
-        <input type="text" name="sexoReceta" />
+        <label for="sexoReceta">Sexo:</label>
+        <input id="sexoReceta" type="text" formControlName="sexoReceta" />
       </div>
 
       <div class="form-group">
-        <label>Fecha:</label>
-        <input type="date" name="fechaReceta" />
+        <label for="fechaReceta">Fecha:</label>
+        <input id="fechaReceta" type="date" formControlName="fechaReceta" />
       </div>
 
       <div class="form-group">
-        <label>Diagnóstico:</label>
-        <input type="text" name="diagnosticoReceta" />
+        <label for="diagnosticoReceta">Diagnóstico:</label>
+        <input id="diagnosticoReceta" type="text" formControlName="diagnosticoReceta" />
       </div>
 
       <div class="form-group">
-        <label>Medicamento recetado:</label>
-        <input type="text" name="medicamento" />
+        <label for="medicamento">Medicamento recetado:</label>
+        <input id="medicamento" type="text" formControlName="medicamento" />
       </div>
 
       <div class="form-group">
-        <label>Dosis:</label>
-        <input type="text" name="dosis" />
+        <label for="dosis">Dosis:</label>
+        <input id="dosis" type="text" formControlName="dosis" />
       </div>
 
       <div class="form-group">
-        <label>Frecuencia:</label>
-        <input type="text" name="frecuencia" />
+        <label for="frecuencia">Frecuencia:</label>
+        <input id="frecuencia" type="text" formControlName="frecuencia" />
       </div>
 
       <div class="form-group">
-        <label>Duración del tratamiento:</label>
-        <input type="text" name="duracion" />
+        <label for="duracion">Duración del tratamiento:</label>
+        <input id="duracion" type="text" formControlName="duracion" />
       </div>
 
       <div class="form-group">
-        <label>Firma del médico:</label>
-        <input type="text" name="firma" />
+        <label for="firma">Firma del médico:</label>
+        <input id="firma" type="text" formControlName="firma" />
       </div>
-    </form>
-  </section>
+    </section>
 
-  <button type="button">Crear Usuario</button>
+    <button type="submit">Crear Usuario</button>
+  </form>
 </div>
-
-<style>
-  button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  button:hover {
-    background-color: #45a049;
-  }
-</style>

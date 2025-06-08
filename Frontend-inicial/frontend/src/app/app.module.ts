@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component'; // Asegúrate de que exista este archivo
 import { AuthInterceptor } from './core/interceptor/auth.interceptor';
 
